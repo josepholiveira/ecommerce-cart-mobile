@@ -30,13 +30,11 @@ interface CartContext {
 const CartContext = createContext<CartContext | null>(null);
 
 const CartProvider: React.FC = ({ children }) => {
-  const storagedProducts = useAsyncStorage('@GoMarketplace:products');
-
   const [data, setData] = useState<CartState[]>([]);
 
   useEffect(() => {
     async function loadProducts(): Promise<void> {
-      const products = await storagedProducts.getItem();
+      const products = await AsyncStorage.getItem('@GoMarketplace:products');
 
       if (products) {
         setData([...JSON.parse(products)]);
@@ -44,27 +42,43 @@ const CartProvider: React.FC = ({ children }) => {
     }
 
     loadProducts();
-  }, [storagedProducts]);
+  }, []);
 
   const addToCart = useCallback(
     async product => {
-      await storagedProducts.setItem(JSON.stringify(product));
+      const productExists = data.find(p => p.id == product.id);
 
-      console.log(...data);
+      const quantity = productExists ? productExists.quantity + 1 : 1;
 
-      setData([...data, { ...product, quantity: 1 }]);
+      if (productExists) {
+        setData(
+          data.map(p => (p.id === product.id ? { ...product, quantity } : p)),
+        );
+      } else {
+        setData([...data, { ...product, quantity }]);
+      }
+
+      await AsyncStorage.setItem(
+        '@GoMarketplace:products',
+        JSON.stringify(data),
+      );
     },
     [data],
   );
 
   const increment = useCallback(
-    id => {
+    async id => {
       setData(
         data.map(product =>
           product.id === id
             ? { ...product, quantity: product.quantity + 1 }
             : product,
         ),
+      );
+
+      await AsyncStorage.setItem(
+        '@GoMarketplace:products',
+        JSON.stringify(data),
       );
     },
     [data],
@@ -78,6 +92,11 @@ const CartProvider: React.FC = ({ children }) => {
             ? { ...product, quantity: product.quantity - 1 }
             : product,
         ),
+      );
+
+      await AsyncStorage.setItem(
+        '@GoMarketplace:products',
+        JSON.stringify(data),
       );
     },
     [data],
