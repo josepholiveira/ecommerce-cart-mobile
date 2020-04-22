@@ -75,3 +75,14 @@ export const ProductQuantity = styled.Text`
   font-size: 16px;
   margin: 5px 0;
 `;
+
+export const SubtotalContainer = styled.View`
+  flex-direction: row;
+  background: #fff;
+  border-radius: 5px;
+  padding: 20px 40px;
+`;
+
+export const SubtotalText = styled.Text`
+  font-size: 16px;
+`;

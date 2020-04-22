@@ -1,7 +1,5 @@
 import React, { useState } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
-import { View } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
 import {
   Container,
@@ -16,38 +14,39 @@ import {
   ActionContainer,
   ActionButton,
   ProductQuantity,
+  SubtotalContainer,
+  SubtotalText,
 } from './styles';
+
+import { useCart } from '../../hooks/cart';
 
 import formatValue from '../../utils/formatValue';
 
-const Dashboard: React.FC = () => {
-  const navigation = useNavigation();
+interface Product {
+  id: string;
+  title: string;
+  image_url: string;
+  price: number;
+  quantity: number;
+}
 
-  const [products, setProducts] = useState([
-    {
-      title: 'Cadeira Charles Eames',
-      image_url:
-        'https://madeiranit.ciaimg.com.br/Assets/Produtos/SuperZoom/cadeira-eiffel-preta-3.jpg?v=4627356f-1',
-      price: 1,
-    },
-    {
-      title: 'Cadeira Rivatti',
-      image_url:
-        'https://http2.mlstatic.com/cadeira-rivatti-branca-pes-madeira-confortavel-bonita-D_NQ_NP_981901-MLB20422264882_092015-F.jpg',
-      price: 2,
-    },
-  ]);
+const Dashboard: React.FC = () => {
+  const { increment, decrement, products } = useCart();
+
+  function handleIncrement(id: string): void {
+    increment(id);
+  }
+
+  function handleDecrement(id: string): void {
+    decrement(id);
+  }
 
   return (
     <Container>
       <ProductContainer>
         <ProductList
           data={products}
-          keyExtractor={item => item.price}
-          ListFooterComponent={<View />}
-          ListFooterComponentStyle={{
-            height: 80,
-          }}
+          keyExtractor={item => item.id}
           renderItem={({ item }: { item: Product }) => (
             <Product>
               <ProductImage source={{ uri: item.image_url }} />
@@ -58,15 +57,15 @@ const Dashboard: React.FC = () => {
                   x1
                 </ProductPrice>
                 <ProductPriceTotal>
-                  {formatValue(item.price * 50)}
+                  {formatValue(item.price * item.quantity)}
                 </ProductPriceTotal>
               </ProductTitleContainer>
               <ActionContainer>
-                <ActionButton>
+                <ActionButton onPress={() => handleIncrement(item.id)}>
                   <FeatherIcon name="plus" color="#000" size={16} />
                 </ActionButton>
-                <ProductQuantity>50</ProductQuantity>
-                <ActionButton>
+                <ProductQuantity>{item.quantity}</ProductQuantity>
+                <ActionButton onPress={() => handleDecrement(item.id)}>
                   <FeatherIcon name="minus" color="#000" size={16} />
                 </ActionButton>
               </ActionContainer>
@@ -74,6 +73,9 @@ const Dashboard: React.FC = () => {
           )}
         />
       </ProductContainer>
+      <SubtotalContainer>
+        <SubtotalText>Total: R$ 5.500,00</SubtotalText>
+      </SubtotalContainer>
     </Container>
   );
 };
