@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 
@@ -11,14 +11,34 @@ import {
   CartButtonText,
 } from './styles';
 
+import formatValue from '../../utils/formatValue';
+
+import { useCart } from '../../hooks/cart';
+
 const FloatingCart: React.FC = () => {
+  const [totalBalance, setTotalBalance] = useState('R$ 00,00');
+  const { products } = useCart();
+
   const navigation = useNavigation();
+
+  useEffect(() => {
+    function getTotalBalance(): void {
+      const balance = products.reduce((accumulator, product) => {
+        accumulator += product.price * product.quantity;
+        return accumulator;
+      }, 0);
+
+      setTotalBalance(formatValue(balance));
+    }
+
+    getTotalBalance();
+  }, [products]);
 
   return (
     <Container>
       <CartPricing>
         <CartTotalText>Total: </CartTotalText>
-        R$ 50,00
+        {totalBalance}
       </CartPricing>
 
       <CartButton onPress={() => navigation.navigate('Cart')}>

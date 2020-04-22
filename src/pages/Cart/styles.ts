@@ -77,12 +77,28 @@ export const ProductQuantity = styled.Text`
 `;
 
 export const SubtotalContainer = styled.View`
+  position: absolute;
+  bottom: 40px;
+
+  elevation: 1;
+  box-shadow: 0px 0px 3.5px rgba(0, 0, 0, 0.2);
+
+  margin: 0 20px;
   flex-direction: row;
   background: #fff;
   border-radius: 5px;
   padding: 20px 40px;
 `;
 
-export const SubtotalText = styled.Text`
+export const SubtotalTitle = styled.Text`
   font-size: 16px;
+  color: #777;
+  flex: 1;
+`;
+
+export const SubtotalValue = styled.Text`
+  font-size: 16px;
+  flex: 1;
+  color: #354be4;
+  font-weight: bold;
 `;

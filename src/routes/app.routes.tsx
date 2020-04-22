@@ -1,6 +1,5 @@
 import React from 'react';
 import { createStackNavigator } from '@react-navigation/stack';
-import { TouchableOpacity } from 'react-native';
 
 import FeatherIcon from 'react-native-vector-icons/Feather';
 

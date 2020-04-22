@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "@react-native-community/async-storage": "^1.9.0",
-    "@react-native-community/masked-view": "^0.1.9",
+    "@react-native-community/masked-view": "^0.1.10",
     "@react-navigation/native": "^5.1.5",
     "@react-navigation/stack": "^5.2.10",
     "axios": "^0.19.2",
@@ -29,6 +29,8 @@
     "@babel/core": "^7.6.2",
     "@babel/runtime": "^7.6.2",
     "@react-native-community/eslint-config": "^1.0.0",
+    "@testing-library/jest-native": "^3.1.0",
+    "@testing-library/react-native": "^5.0.3",
     "@types/jest": "^24.0.24",
     "@types/react-native": "^0.62.0",
     "@types/react-native-vector-icons": "^6.4.5",
@@ -54,7 +56,17 @@
     "typescript": "^3.8.3"
   },
   "jest": {
-    "preset": "react-native",
+    "preset": "@testing-library/react-native",
+    "setupFiles": [
+      "./jest.setup.js"
+    ],
+    "moduleNameMapper": {
+      "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.ts",
+      "\\.(css|less)$": "<rootDir>/src/mocks/fileMock.ts"
+    },
+    "setupFilesAfterEnv": [
+      "@testing-library/jest-native/extend-expect"
+    ],
     "moduleFileExtensions": [
       "ts",
       "tsx",

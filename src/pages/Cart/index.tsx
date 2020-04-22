@@ -1,5 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
+
+import { View } from 'react-native';
 
 import {
   Container,
@@ -15,7 +17,8 @@ import {
   ActionButton,
   ProductQuantity,
   SubtotalContainer,
-  SubtotalText,
+  SubtotalTitle,
+  SubtotalValue,
 } from './styles';
 
 import { useCart } from '../../hooks/cart';
@@ -31,6 +34,7 @@ interface Product {
 }
 
 const Dashboard: React.FC = () => {
+  const [totalBalance, setTotalBalance] = useState('R$ 00,00');
   const { increment, decrement, products } = useCart();
 
   function handleIncrement(id: string): void {
@@ -41,12 +45,29 @@ const Dashboard: React.FC = () => {
     decrement(id);
   }
 
+  useEffect(() => {
+    function getTotalBalance(): string {
+      const balance = products.reduce((accumulator, product) => {
+        accumulator += product.price * product.quantity;
+        return accumulator;
+      }, 0);
+
+      setTotalBalance(formatValue(balance));
+    }
+
+    getTotalBalance();
+  }, [products]);
+
   return (
     <Container>
       <ProductContainer>
         <ProductList
           data={products}
           keyExtractor={item => item.id}
+          ListFooterComponent={<View />}
+          ListFooterComponentStyle={{
+            height: 80,
+          }}
           renderItem={({ item }: { item: Product }) => (
             <Product>
               <ProductImage source={{ uri: item.image_url }} />
@@ -74,7 +95,8 @@ const Dashboard: React.FC = () => {
         />
       </ProductContainer>
       <SubtotalContainer>
-        <SubtotalText>Total: R$ 5.500,00</SubtotalText>
+        <SubtotalTitle>Total: </SubtotalTitle>
+        <SubtotalValue>{totalBalance}</SubtotalValue>
       </SubtotalContainer>
     </Container>
   );
