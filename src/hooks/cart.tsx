@@ -6,11 +6,7 @@ import React, {
   useEffect,
 } from 'react';
 
-import { Alert } from 'react-native';
-
-import AsyncStorage, {
-  useAsyncStorage,
-} from '@react-native-community/async-storage';
+import AsyncStorage from '@react-native-community/async-storage';
 
 interface CartState {
   id: string;
