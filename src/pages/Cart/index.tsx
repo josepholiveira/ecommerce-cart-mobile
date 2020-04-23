@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import { View } from 'react-native';
@@ -33,8 +33,7 @@ interface Product {
   quantity: number;
 }
 
-const Dashboard: React.FC = () => {
-  const [totalBalance, setTotalBalance] = useState('R$ 00,00');
+const Cart: React.FC = () => {
   const { increment, decrement, products } = useCart();
 
   function handleIncrement(id: string): void {
@@ -45,17 +44,14 @@ const Dashboard: React.FC = () => {
     decrement(id);
   }
 
-  useEffect(() => {
-    function getTotalBalance(): string {
-      const balance = products.reduce((accumulator, product) => {
-        accumulator += product.price * product.quantity;
-        return accumulator;
-      }, 0);
+  const cartTotal = useMemo(() => {
+    const total = products.reduce((accumulator, product) => {
+      const productSubTotal = product.price * product.quantity;
 
-      setTotalBalance(formatValue(balance));
-    }
+      return accumulator + productSubTotal;
+    }, 0);
 
-    getTotalBalance();
+    return total;
   }, [products]);
 
   return (
@@ -82,11 +78,17 @@ const Dashboard: React.FC = () => {
                 </ProductPriceTotal>
               </ProductTitleContainer>
               <ActionContainer>
-                <ActionButton onPress={() => handleIncrement(item.id)}>
+                <ActionButton
+                  testID={`increment-${item.id}`}
+                  onPress={() => handleIncrement(item.id)}
+                >
                   <FeatherIcon name="plus" color="#000" size={16} />
                 </ActionButton>
                 <ProductQuantity>{item.quantity}</ProductQuantity>
-                <ActionButton onPress={() => handleDecrement(item.id)}>
+                <ActionButton
+                  testID={`decrement-${item.id}`}
+                  onPress={() => handleDecrement(item.id)}
+                >
                   <FeatherIcon name="minus" color="#000" size={16} />
                 </ActionButton>
               </ActionContainer>
@@ -96,10 +98,10 @@ const Dashboard: React.FC = () => {
       </ProductContainer>
       <SubtotalContainer>
         <SubtotalTitle>Total: </SubtotalTitle>
-        <SubtotalValue>{totalBalance}</SubtotalValue>
+        <SubtotalValue>{cartTotal}</SubtotalValue>
       </SubtotalContainer>
     </Container>
   );
 };
 
-export default Dashboard;
+export default Cart;

@@ -33,17 +33,6 @@ const apiMock = new AxiosMock(api);
 
 describe('Dashboard', () => {
   it('should be able to list products', async () => {
-    // const useCartMocked = mocked(useCart);
-
-    // useCartMocked.mockReturnValue({
-    //   addToCart(item) {
-    //     console.log(item);
-    //   },
-    //   products: [],
-    //   increment: jest.fn(),
-    //   decrement: jest.fn(),
-    // });
-
     apiMock.onGet('products').reply(200, [
       {
         id: '1234',
@@ -61,35 +50,32 @@ describe('Dashboard', () => {
       },
     ]);
 
-    const { getByText, getByTestId, getAllByTestId } = render(<Dashboard />);
-
-    // fireEvent.press(getByTestId(`like-button-1234`));
-    // fireEvent.press(getByTestId(`like-button-1234`));
+    const { getByText, getByTestId } = render(<Dashboard />);
 
     await wait(() => expect(getByText('Cadeira Rivatti')).toBeTruthy(), {
       timeout: 200,
     });
 
     expect(getByText('Cadeira Rivatti')).toBeTruthy();
-    expect(getByText('R$ 400,00')).toBeTruthy();
+    expect(getByTestId('add-to-cart-1234')).toBeTruthy();
 
     expect(getByText('Poltrona de madeira')).toBeTruthy();
-    expect(getByText('R$ 600,00')).toBeTruthy();
+    expect(getByTestId('add-to-cart-123456')).toBeTruthy();
   });
 
   it('should be able to add item to cart', async () => {
     const useCartMocked = mocked(useCart);
 
+    const addToCart = jest.fn();
+
     useCartMocked.mockReturnValue({
-      addToCart(item) {
-        console.log(item);
-      },
+      addToCart,
       products: [],
       increment: jest.fn(),
       decrement: jest.fn(),
     });
 
-    apiMock.onGet('products').reply(200, [
+    const products = [
       {
         id: '1234',
         title: 'Cadeira Rivatti',
@@ -104,15 +90,20 @@ describe('Dashboard', () => {
           'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRod5Tf0R0LkCjClrgAJU0tM713nyqHTP2lFbXU1o5zheYpwgfonTTde8swBNlahgij4hGeOgn7hQ&usqp=CAc',
         price: 600,
       },
-    ]);
+    ];
 
-    const { getByText, getByTestId, getAllByTestId } = render(<Dashboard />);
+    apiMock.onGet('products').reply(200, products);
 
-    // fireEvent.press(getByTestId(`like-button-1234`));
+    const { getByText, getByTestId } = render(<Dashboard />);
 
-    await wait(() => fireEvent.press(getByTestId(`add-to-cart-1234`)));
-    await wait(() => fireEvent.press(getByTestId(`add-to-cart-1234`)));
+    await wait(() => expect(getByText('Cadeira Rivatti')).toBeTruthy(), {
+      timeout: 200,
+    });
 
-    // expect(getByText('R$ 800,00')).toBeTruthy();
+    act(() => {
+      fireEvent.press(getByTestId('add-to-cart-1234'));
+    });
+
+    expect(addToCart).toHaveBeenCalledWith(products[0]);
   });
 });

@@ -15,12 +15,16 @@ import formatValue from '../../utils/formatValue';
 
 import { useCart } from '../../hooks/cart';
 
+// Calculo do total
+// Navegação no clique do TouchableHighlight
+
 const FloatingCart: React.FC = () => {
   const [totalBalance, setTotalBalance] = useState('R$ 00,00');
   const { products } = useCart();
 
   const navigation = useNavigation();
 
+  // useMemo
   useEffect(() => {
     function getTotalBalance(): void {
       const balance = products.reduce((accumulator, product) => {
