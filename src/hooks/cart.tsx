@@ -18,7 +18,7 @@ interface CartState {
 
 interface CartContext {
   products: CartState[];
-  addToCart(credentials: CartState): void;
+  addToCart(item: CartState): void;
   increment(id: string): void;
   decrement(id: string): void;
 }
@@ -42,7 +42,7 @@ const CartProvider: React.FC = ({ children }) => {
 
   const addToCart = useCallback(
     async product => {
-      const productExists = data.find(p => p.id == product.id);
+      const productExists = data.find(p => p.id === product.id);
 
       const quantity = productExists ? productExists.quantity + 1 : 1;
 

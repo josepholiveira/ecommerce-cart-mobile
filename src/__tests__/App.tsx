@@ -1,49 +1,48 @@
-import React from 'react';
-import 'react-native';
-import '@react-navigation/native';
+/* eslint-disable import/first */
 
-import { render, fireEvent, act } from '@testing-library/react-native';
+import React from 'react';
+
+import { mocked } from 'ts-jest/utils';
+import { render, fireEvent, act, wait } from '@testing-library/react-native';
 import AxiosMock from 'axios-mock-adapter';
 import api from '../services/api';
 
+jest.mock('@react-navigation/native', () => {
+  // Require the original module to not be mocked...
+  const originalModule = jest.requireActual('@react-navigation/native');
+
+  return {
+    __esModule: true, // Use it when dealing with esModules
+    ...originalModule,
+    useNavigation: jest.fn(),
+  };
+});
+
+jest.mock('../hooks/cart.tsx', () => ({
+  __esModule: true,
+  useCart: jest.fn().mockReturnValue({
+    addToCart: jest.fn(),
+    products: [],
+  }),
+}));
+
 import Dashboard from '../pages/Dashboard';
-import MockedNavigator from '../__mocks__/mockNavigator';
-import AppContainer from '../hooks';
+import { useCart } from '../hooks/cart';
 
 const apiMock = new AxiosMock(api);
 
-const wait = (amount = 0): Promise<void> => {
-  return new Promise(resolve => setTimeout(resolve, amount));
-};
+describe('Dashboard', () => {
+  it('should be able to list products', async () => {
+    // const useCartMocked = mocked(useCart);
 
-const actWait = async (amount = 0): Promise<void> => {
-  await act(async () => {
-    await wait(amount);
-  });
-};
-
-jest.mock(
-  'react-native/Libraries/Components/Touchable/TouchableOpacity.js',
-  () => {
-    const { TouchableHighlight } = require('react-native');
-
-    const MockTouchable = props => {
-      return <TouchableHighlight {...props} />;
-    };
-
-    MockTouchable.displayName = 'TouchableOpacity';
-
-    return MockTouchable;
-  },
-);
-
-describe('Hello', () => {
-  it('should be able to list the transactions', async () => {
-    const { getByText, getByTestId, getAllByTestId, debug } = render(
-      <AppContainer>
-        <MockedNavigator component={Dashboard} />
-      </AppContainer>,
-    );
+    // useCartMocked.mockReturnValue({
+    //   addToCart(item) {
+    //     console.log(item);
+    //   },
+    //   products: [],
+    //   increment: jest.fn(),
+    //   decrement: jest.fn(),
+    // });
 
     apiMock.onGet('products').reply(200, [
       {
@@ -62,12 +61,16 @@ describe('Hello', () => {
       },
     ]);
 
-    debug(getByTestId(`like-button-1234`));
-    fireEvent.press(getByTestId(`like-button-1234`));
-    fireEvent.press(getByTestId(`like-button-1234`));
+    const { getByText, getByTestId, getAllByTestId } = render(<Dashboard />);
 
-    await actWait();
+    // fireEvent.press(getByTestId(`like-button-1234`));
+    // fireEvent.press(getByTestId(`like-button-1234`));
 
-    expect(getByText('Carrinho')).toBeTruthy();
+    await wait(() => expect(getByText('Cadeira Rivatti')).toBeTruthy(), {
+      timeout: 200,
+    });
+
+    expect(getByText('Cadeira Rivatti')).toBeTruthy();
+    expect(getByText('Poltrona de madeira')).toBeTruthy();
   });
 });

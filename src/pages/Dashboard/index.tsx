@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
-import { View } from 'react-native';
+import { View, ListRenderItem } from 'react-native';
 
 import { useNavigation } from '@react-navigation/native';
 import formatValue from '../../utils/formatValue';
@@ -69,13 +69,13 @@ const Dashboard: React.FC = () => {
           ListFooterComponentStyle={{
             height: 80,
           }}
-          renderItem={({ item }: { item: Product }) => (
+          renderItem={({ item }) => (
             <Product>
               <ProductImage source={{ uri: item.image_url }} />
               <ProductTitle>{item.title}</ProductTitle>
               <ProductPrice>{formatValue(item.price)}</ProductPrice>
               <ProductButton
-                testID="like-button-1234"
+                testID={`add-to-cart-${item.id}`}
                 onPress={() => handleAddToCart(item)}
               >
                 <FeatherIcon size={24} name="plus" color="#fff" />
