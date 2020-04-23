@@ -75,7 +75,7 @@ const Dashboard: React.FC = () => {
               <ProductTitle>{item.title}</ProductTitle>
               <ProductPrice>{formatValue(item.price)}</ProductPrice>
               <ProductButton
-                testID={`like-button-${item.id}`}
+                testID="like-button-1234"
                 onPress={() => handleAddToCart(item)}
               >
                 <FeatherIcon size={24} name="plus" color="#fff" />
