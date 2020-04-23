@@ -28,8 +28,8 @@ export const Product = styled.View`
 `;
 
 export const ProductImage = styled.Image`
-  height: 70px;
-  width: 70px;
+  height: 92px;
+  width: 92px;
 `;
 
 export const ProductTitleContainer = styled.View`
@@ -41,63 +41,76 @@ export const ProductTitle = styled.Text`
   font-size: 16px;
 `;
 
+export const ProductPriceContainer = styled.View`
+  flex-direction: column;
+`;
+
+export const TotalContainer = styled.View`
+  flex-direction: row;
+  margin-top: 8px;
+`;
+
+export const ProductSinglePrice = styled.Text`
+  font-size: 12px;
+  color: #a0a0b3;
+  margin-top: 8px;
+`;
+
 export const ProductPrice = styled.Text`
   font-weight: bold;
   margin-top: 5px;
 
-  font-size: 12px;
-  color: #a3a3a3;
+  font-size: 16px;
+  color: #e83f5b;
 `;
 
-export const ProductPriceTotal = styled.Text`
+export const ProductQuantity = styled.Text`
   font-weight: bold;
   margin-top: 5px;
+  margin-right: 10px;
 
-  font-size: 18px;
-  color: #354be4;
+  font-size: 16px;
+  color: #e83f5b;
 `;
 
 export const ActionContainer = styled.View`
   align-self: flex-end;
   align-items: center;
+  justify-content: space-between;
 
   margin-left: auto;
+`;
 
-  background: #ebeef8;
-  padding: 5px;
+export const ActionButton = styled.TouchableOpacity`
+  background: rgba(232, 63, 91, 0.1);
   border-radius: 5px;
+  padding: 12px;
+  margin-bottom: 5px;
 `;
 
-export const ActionButton = styled.TouchableOpacity``;
-
-export const ProductQuantity = styled.Text`
-  font-size: 16px;
-  margin: 5px 0;
-`;
-
-export const SubtotalContainer = styled.View`
+export const TotalProductsContainer = styled.View`
   position: absolute;
-  bottom: 40px;
+  bottom: 0px;
 
-  elevation: 1;
-  box-shadow: 0px 0px 3.5px rgba(0, 0, 0, 0.2);
-
-  margin: 0 20px;
   flex-direction: row;
-  background: #fff;
-  border-radius: 5px;
+  background: #e83f5b;
+
   padding: 20px 40px;
+  justify-content: space-between;
+  align-items: center;
 `;
 
-export const SubtotalTitle = styled.Text`
+export const TotalProductsText = styled.Text`
   font-size: 16px;
-  color: #777;
+  color: #fff;
+  margin-left: 5px;
+
   flex: 1;
+  font-weight: bold;
 `;
 
 export const SubtotalValue = styled.Text`
   font-size: 16px;
-  flex: 1;
-  color: #354be4;
+  color: #fff;
   font-weight: bold;
 `;

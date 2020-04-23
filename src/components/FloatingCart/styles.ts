@@ -2,41 +2,40 @@ import styled from 'styled-components/native';
 
 export const Container = styled.View`
   position: absolute;
+  bottom: 0px;
 
-  bottom: 40px;
-  background: #fff;
   flex-direction: row;
+  background: #e83f5b;
+
+  padding: 0 20px;
+  justify-content: space-between;
   align-items: center;
-  margin: 0 15px;
-
-  border-top-left-radius: 5px;
-  border-bottom-left-radius: 5px;
-
-  elevation: 1;
-  box-shadow: 0px 0px 3.5px rgba(0, 0, 0, 0.2);
-`;
-
-export const CartTotalText = styled.Text`
-  color: #777;
 `;
 
 export const CartPricing = styled.Text`
   padding: 20px;
-  flex: 1;
+`;
+
+export const CartTotalPrice = styled.Text`
+  font-size: 16px;
+  color: #fff;
+  font-weight: bold;
 `;
 
 export const CartButton = styled.TouchableOpacity`
   flex-direction: row;
-  align-items: center;
-  justify-content: center;
+  background: #e83f5b;
 
-  background: #354be4;
-  padding: 15px 15px;
-  border-radius: 5px;
-  border-top-left-radius: 0px;
+  flex: 1;
+  padding: 20px 20px;
+  justify-content: space-between;
+  align-items: center;
 `;
 
 export const CartButtonText = styled.Text`
   font-weight: bold;
   color: #fff;
+  margin-left: 5px;
+  flex: 1;
+  margin-right: auto;
 `;

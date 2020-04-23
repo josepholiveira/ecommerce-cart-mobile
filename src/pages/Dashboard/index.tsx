@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
-import { View } from 'react-native';
+import { View, Image } from 'react-native';
 
 import formatValue from '../../utils/formatValue';
 import { useCart } from '../../hooks/cart';
@@ -11,14 +11,12 @@ import FloatingCart from '../../components/FloatingCart';
 
 import {
   Container,
-  Header,
-  LogoContainer,
-  LogoText,
   ProductContainer,
   ProductImage,
   ProductList,
   Product,
   ProductTitle,
+  PriceContainer,
   ProductPrice,
   ProductButton,
 } from './styles';
@@ -51,12 +49,6 @@ const Dashboard: React.FC = () => {
 
   return (
     <Container>
-      <Header>
-        <LogoContainer>
-          <FeatherIcon name="shopping-bag" size={24} color="#354be4" />
-          <LogoText>GoMarketplace</LogoText>
-        </LogoContainer>
-      </Header>
       <ProductContainer>
         <ProductList
           data={products}
@@ -69,13 +61,15 @@ const Dashboard: React.FC = () => {
             <Product>
               <ProductImage source={{ uri: item.image_url }} />
               <ProductTitle>{item.title}</ProductTitle>
-              <ProductPrice>{formatValue(item.price)}</ProductPrice>
-              <ProductButton
-                testID={`add-to-cart-${item.id}`}
-                onPress={() => handleAddToCart(item)}
-              >
-                <FeatherIcon size={24} name="plus" color="#fff" />
-              </ProductButton>
+              <PriceContainer>
+                <ProductPrice>{formatValue(item.price)}</ProductPrice>
+                <ProductButton
+                  testID={`add-to-cart-${item.id}`}
+                  onPress={() => handleAddToCart(item)}
+                >
+                  <FeatherIcon size={20} name="plus" color="#C4C4C4" />
+                </ProductButton>
+              </PriceContainer>
             </Product>
           )}
         />

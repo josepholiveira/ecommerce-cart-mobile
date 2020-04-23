@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useMemo } from 'react';
+import React, { useMemo } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import { View } from 'react-native';
@@ -11,13 +11,15 @@ import {
   ProductImage,
   ProductTitleContainer,
   ProductTitle,
+  ProductPriceContainer,
+  ProductSinglePrice,
+  TotalContainer,
   ProductPrice,
-  ProductPriceTotal,
+  ProductQuantity,
   ActionContainer,
   ActionButton,
-  ProductQuantity,
-  SubtotalContainer,
-  SubtotalTitle,
+  TotalProductsContainer,
+  TotalProductsText,
   SubtotalValue,
 } from './styles';
 
@@ -51,6 +53,16 @@ const Cart: React.FC = () => {
       return accumulator + productSubTotal;
     }, 0);
 
+    return formatValue(total);
+  }, [products]);
+
+  const totalItensInCart = useMemo(() => {
+    const total = products.reduce((accumulator, product) => {
+      const productQuantity = product.quantity;
+
+      return accumulator + productQuantity;
+    }, 0);
+
     return total;
   }, [products]);
 
@@ -69,37 +81,43 @@ const Cart: React.FC = () => {
               <ProductImage source={{ uri: item.image_url }} />
               <ProductTitleContainer>
                 <ProductTitle>{item.title}</ProductTitle>
-                <ProductPrice>
-                  {formatValue(item.price)}
-                  x1
-                </ProductPrice>
-                <ProductPriceTotal>
-                  {formatValue(item.price * item.quantity)}
-                </ProductPriceTotal>
+                <ProductPriceContainer>
+                  <ProductSinglePrice>
+                    {formatValue(item.price)}
+                  </ProductSinglePrice>
+
+                  <TotalContainer>
+                    <ProductQuantity>{`${item.quantity}x`}</ProductQuantity>
+
+                    <ProductPrice>
+                      {formatValue(item.price * item.quantity)}
+                    </ProductPrice>
+                  </TotalContainer>
+                </ProductPriceContainer>
               </ProductTitleContainer>
               <ActionContainer>
                 <ActionButton
                   testID={`increment-${item.id}`}
                   onPress={() => handleIncrement(item.id)}
                 >
-                  <FeatherIcon name="plus" color="#000" size={16} />
+                  <FeatherIcon name="plus" color="#E83F5B" size={16} />
                 </ActionButton>
-                <ProductQuantity>{item.quantity}</ProductQuantity>
                 <ActionButton
                   testID={`decrement-${item.id}`}
                   onPress={() => handleDecrement(item.id)}
                 >
-                  <FeatherIcon name="minus" color="#000" size={16} />
+                  <FeatherIcon name="minus" color="#E83F5B" size={16} />
                 </ActionButton>
               </ActionContainer>
             </Product>
           )}
         />
       </ProductContainer>
-      <SubtotalContainer>
-        <SubtotalTitle>Total: </SubtotalTitle>
+      <TotalProductsContainer>
+        <FeatherIcon name="shopping-cart" color="#fff" size={24} />
+        <TotalProductsText>{`${totalItensInCart} itens`}</TotalProductsText>
         <SubtotalValue>{cartTotal}</SubtotalValue>
-      </SubtotalContainer>
+      </TotalProductsContainer>
     </Container>
   );
 };

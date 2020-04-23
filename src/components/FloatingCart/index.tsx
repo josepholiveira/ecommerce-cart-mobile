@@ -1,14 +1,14 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useMemo } from 'react';
 
 import { useNavigation } from '@react-navigation/native';
 
 import FeatherIcon from 'react-native-vector-icons/Feather';
 import {
   Container,
-  CartTotalText,
   CartPricing,
   CartButton,
   CartButtonText,
+  CartTotalPrice,
 } from './styles';
 
 import formatValue from '../../utils/formatValue';
@@ -19,37 +19,43 @@ import { useCart } from '../../hooks/cart';
 // Navegação no clique do TouchableHighlight
 
 const FloatingCart: React.FC = () => {
-  const [totalBalance, setTotalBalance] = useState('R$ 00,00');
   const { products } = useCart();
 
   const navigation = useNavigation();
 
-  // useMemo
-  useEffect(() => {
-    function getTotalBalance(): void {
-      const balance = products.reduce((accumulator, product) => {
-        accumulator += product.price * product.quantity;
-        return accumulator;
-      }, 0);
+  const cartTotal = useMemo(() => {
+    const total = products.reduce((accumulator, product) => {
+      const productSubTotal = product.price * product.quantity;
 
-      setTotalBalance(formatValue(balance));
-    }
+      return accumulator + productSubTotal;
+    }, 0);
 
-    getTotalBalance();
+    return formatValue(total);
+  }, [products]);
+
+  const totalItensInCart = useMemo(() => {
+    const total = products.reduce((accumulator, product) => {
+      const productQuantity = product.quantity;
+
+      return accumulator + productQuantity;
+    }, 0);
+
+    return total;
   }, [products]);
 
   return (
     <Container>
-      <CartPricing testID="123">
-        <CartTotalText>Total: </CartTotalText>
-        {totalBalance}
-      </CartPricing>
-
-      <CartButton onPress={() => navigation.navigate('Cart')}>
-        <CartButtonText>Carrinho </CartButtonText>
-
+      <CartButton
+        testID="navigate-to-cart-button"
+        onPress={() => navigation.navigate('Cart')}
+      >
         <FeatherIcon name="shopping-cart" size={24} color="#fff" />
+        <CartButtonText>{`${totalItensInCart} itens`}</CartButtonText>
       </CartButton>
+
+      <CartPricing>
+        <CartTotalPrice>{cartTotal}</CartTotalPrice>
+      </CartPricing>
     </Container>
   );
 };

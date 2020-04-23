@@ -6,24 +6,9 @@ export const Container = styled.SafeAreaView`
   align-items: center;
 `;
 
-export const Header = styled.View`
-  padding: 20px 0px;
-`;
-
-export const LogoContainer = styled.View`
-  flex-direction: row;
-  align-items: center;
-`;
-
-export const LogoText = styled.Text`
-  font-size: 24px;
-  margin-left: 5px;
-  color: #354be4;
-`;
-
 export const ProductContainer = styled.View`
   border-radius: 5px;
-  margin-top: 15px;
+  margin-top: 60px;
   flex: 1;
   flex-direction: row;
 `;
@@ -37,32 +22,33 @@ export const ProductList = styled(FlatList).attrs({
 
 export const Product = styled.View`
   background: #fff;
-  padding: 25px 25px;
+  padding: 16px 16px;
   border-radius: 5px;
-  margin: 5px;
+  margin: 8px;
   flex: 1;
 `;
 
 export const ProductImage = styled.Image`
-  height: 100px;
-  width: 100px;
+  height: 122px;
+  width: 122px;
 `;
 
 export const ProductTitle = styled.Text`
-  font-size: 16px;
+  font-size: 14px;
+`;
+
+export const PriceContainer = styled.View`
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+
+  margin-top: 10px;
 `;
 
 export const ProductPrice = styled.Text`
   font-weight: bold;
-  margin-top: 10px;
+  font-size: 16px;
+  color: #e83f5b;
 `;
 
-export const ProductButton = styled.TouchableOpacity`
-  position: absolute;
-  bottom: 0;
-  right: 0;
-  background: #354be4;
-  border-bottom-right-radius: 5px;
-  border-top-left-radius: 5px;
-  padding: 5px;
-`;
+export const ProductButton = styled.TouchableOpacity``;

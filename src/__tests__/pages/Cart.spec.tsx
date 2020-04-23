@@ -52,20 +52,26 @@ describe('Dashboard', () => {
     const { getByText } = render(<Cart />);
 
     expect(getByText('Cadeira Rivatti')).toBeTruthy();
-    expect(getByText('400x1')).toBeTruthy();
+    expect(getByText('400')).toBeTruthy();
     expect(getByText('2000')).toBeTruthy();
-    expect(getByText('5')).toBeTruthy();
+    expect(getByText('5x')).toBeTruthy();
 
     expect(getByText('Poltrona de madeira')).toBeTruthy();
-    expect(getByText('600x1')).toBeTruthy();
+    expect(getByText('600')).toBeTruthy();
     expect(getByText('6000')).toBeTruthy();
-    expect(getByText('10')).toBeTruthy();
+    expect(getByText('10x')).toBeTruthy();
   });
 
   it('should be able to calculate the cart total', async () => {
     const { getByText } = render(<Cart />);
 
     expect(getByText('8000')).toBeTruthy();
+  });
+
+  it('should be able to calculate the cart total', async () => {
+    const { getByText } = render(<Cart />);
+
+    expect(getByText('15 itens')).toBeTruthy();
   });
 
   it('should be able to increment product quantity on the cart', async () => {
