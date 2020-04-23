@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
-import { FlatList, View } from 'react-native';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { FlatList } from 'react-native';
 
 export const Container = styled.SafeAreaView`
   flex: 1;

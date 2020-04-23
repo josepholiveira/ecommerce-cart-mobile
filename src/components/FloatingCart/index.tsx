@@ -36,7 +36,7 @@ const FloatingCart: React.FC = () => {
 
   return (
     <Container>
-      <CartPricing>
+      <CartPricing testID="123">
         <CartTotalText>Total: </CartTotalText>
         {totalBalance}
       </CartPricing>

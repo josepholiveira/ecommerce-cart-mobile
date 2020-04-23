@@ -1,7 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import { View } from 'react-native';
+
+import { useNavigation } from '@react-navigation/native';
+import formatValue from '../../utils/formatValue';
+import { useCart } from '../../hooks/cart';
+import api from '../../services/api';
+
+import FloatingCart from '../../components/FloatingCart';
 
 import {
   Container,
@@ -15,13 +22,7 @@ import {
   ProductTitle,
   ProductPrice,
   ProductButton,
-  ProductButtonText,
 } from './styles';
-
-import FloatingCart from '../../components/FloatingCart';
-
-import formatValue from '../../utils/formatValue';
-import { useCart } from '../../hooks/cart';
 
 interface Product {
   id: string;
@@ -32,51 +33,25 @@ interface Product {
 
 const Dashboard: React.FC = () => {
   const { addToCart } = useCart();
+  const navigation = useNavigation();
 
-  const [products, setProducts] = useState<Product[]>([
-    {
-      id: '123',
-      title: 'Cadeira Charles Eames',
-      image_url:
-        'https://madeiranit.ciaimg.com.br/Assets/Produtos/SuperZoom/cadeira-eiffel-preta-3.jpg?v=4627356f-1',
-      price: 500,
-    },
-    {
-      id: '1234',
-      title: 'Cadeira Rivatti',
-      image_url:
-        'https://http2.mlstatic.com/cadeira-rivatti-branca-pes-madeira-confortavel-bonita-D_NQ_NP_981901-MLB20422264882_092015-F.jpg',
-      price: 600,
-    },
-    {
-      id: '12345',
-      title: 'Poltrona Bona Rosa',
-      image_url:
-        'https://staticmobly.akamaized.net/p/Mobly-Poltrona-Bona-Rosa-3170-822255-1-zoom.jpg',
-      price: 700,
-    },
-    {
-      id: '123456',
-      title: 'Poltrona de madeira',
-      image_url:
-        'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRod5Tf0R0LkCjClrgAJU0tM713nyqHTP2lFbXU1o5zheYpwgfonTTde8swBNlahgij4hGeOgn7hQ&usqp=CAc',
-      price: 800,
-    },
-    {
-      id: '45678',
-      title: 'Cadeira Charles Eames',
-      image_url:
-        'https://madeiranit.ciaimg.com.br/Assets/Produtos/SuperZoom/cadeira-eiffel-preta-3.jpg?v=4627356f-1',
-      price: 900,
-    },
-    {
-      id: '56789',
-      title: 'Cadeira Rivatti',
-      image_url:
-        'https://http2.mlstatic.com/cadeira-rivatti-branca-pes-madeira-confortavel-bonita-D_NQ_NP_981901-MLB20422264882_092015-F.jpg',
-      price: 100,
-    },
-  ]);
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    async function loadProducts(): Promise<void> {
+      const response = await api.get('/products');
+
+      setProducts(response.data);
+    }
+
+    loadProducts();
+  }, []);
+
+  function handleAddToCart(item: Product): void {
+    addToCart(item);
+
+    navigation.navigate('Cart');
+  }
 
   return (
     <Container>
@@ -99,7 +74,10 @@ const Dashboard: React.FC = () => {
               <ProductImage source={{ uri: item.image_url }} />
               <ProductTitle>{item.title}</ProductTitle>
               <ProductPrice>{formatValue(item.price)}</ProductPrice>
-              <ProductButton onPress={() => addToCart(item)}>
+              <ProductButton
+                testID={`like-button-${item.id}`}
+                onPress={() => handleAddToCart(item)}
+              >
                 <FeatherIcon size={24} name="plus" color="#fff" />
               </ProductButton>
             </Product>

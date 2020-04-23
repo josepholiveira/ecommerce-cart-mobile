@@ -13,7 +13,7 @@ interface CartState {
   title: string;
   image_url: string;
   price: number;
-  quantity: number | 1;
+  quantity: number;
 }
 
 interface CartContext {

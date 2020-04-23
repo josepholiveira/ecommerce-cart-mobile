@@ -15,6 +15,7 @@
     "@react-navigation/native": "^5.1.5",
     "@react-navigation/stack": "^5.2.10",
     "axios": "^0.19.2",
+    "json-server": "^0.16.1",
     "react": "16.11.0",
     "react-native": "0.62.2",
     "react-native-gesture-handler": "^1.6.1",
@@ -38,6 +39,7 @@
     "@types/styled-components": "^5.1.0",
     "@typescript-eslint/eslint-plugin": "^2.27.0",
     "@typescript-eslint/parser": "^2.27.0",
+    "axios-mock-adapter": "^1.18.1",
     "babel-jest": "^24.9.0",
     "eslint": "^6.8.0",
     "eslint-config-airbnb": "^18.1.0",
@@ -57,13 +59,6 @@
   },
   "jest": {
     "preset": "@testing-library/react-native",
-    "setupFiles": [
-      "./jest.setup.js"
-    ],
-    "moduleNameMapper": {
-      "\\.(jpg|ico|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/src/__mocks__/fileMock.ts",
-      "\\.(css|less)$": "<rootDir>/src/mocks/fileMock.ts"
-    },
     "setupFilesAfterEnv": [
       "@testing-library/jest-native/extend-expect"
     ],

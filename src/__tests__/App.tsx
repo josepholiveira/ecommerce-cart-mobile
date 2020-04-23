@@ -2,15 +2,18 @@ import React from 'react';
 import 'react-native';
 import '@react-navigation/native';
 
-import { render, fireEvent } from '@testing-library/react-native';
+import { render, fireEvent, act } from '@testing-library/react-native';
+import api from '../services/api';
 
 import Cart from '../index';
 
-const wait = (amount = 0) => {
+const apiMock = new AxiosMock(api);
+
+const wait = (amount = 0): Promise<void> => {
   return new Promise(resolve => setTimeout(resolve, amount));
 };
 
-const actWait = async (amount = 0) => {
+const actWait = async (amount = 0): Promise<void> => {
   await act(async () => {
     await wait(amount);
   });
@@ -32,9 +35,14 @@ jest.mock(
 );
 
 describe('Hello', () => {
-  it('should be able to sum', () => {
-    const { getByText, getAllByTestId } = render(<Cart />);
+  it('should be able to list the transactions', async () => {
+    const { getByText, getByTestId, getAllByTestId } = render(<Cart />);
 
-    expect(getByText('GoMarketplace')).toBeTruthy();
+    fireEvent.press(getByTestId(`like-button-1234`));
+    fireEvent.press(getByTestId(`like-button-1234`));
+
+    await actWait();
+
+    expect(getByText('Carrinho')).toBeTruthy();
   });
 });

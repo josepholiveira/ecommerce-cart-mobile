@@ -1,6 +1,5 @@
 import styled from 'styled-components/native';
-import { FlatList, View } from 'react-native';
-import { getBottomSpace } from 'react-native-iphone-x-helper';
+import { FlatList } from 'react-native';
 
 export const Container = styled.SafeAreaView`
   flex: 1;
@@ -67,5 +66,3 @@ export const ProductButton = styled.TouchableOpacity`
   border-top-left-radius: 5px;
   padding: 5px;
 `;
-
-export const ProductButtonText = styled.Text``;
