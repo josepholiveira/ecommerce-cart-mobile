@@ -1,5 +1,4 @@
 import React from 'react';
-jest.mock('@react-native-community/async-storage');
 
 jest.mock(
   'react-native/Libraries/Components/Touchable/TouchableOpacity.js',
