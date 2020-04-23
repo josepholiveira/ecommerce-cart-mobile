@@ -3,7 +3,6 @@ import FeatherIcon from 'react-native-vector-icons/Feather';
 
 import { View, ListRenderItem } from 'react-native';
 
-import { useNavigation } from '@react-navigation/native';
 import formatValue from '../../utils/formatValue';
 import { useCart } from '../../hooks/cart';
 import api from '../../services/api';
@@ -33,7 +32,6 @@ interface Product {
 
 const Dashboard: React.FC = () => {
   const { addToCart } = useCart();
-  const navigation = useNavigation();
 
   const [products, setProducts] = useState<Product[]>([]);
 
@@ -49,8 +47,6 @@ const Dashboard: React.FC = () => {
 
   function handleAddToCart(item: Product): void {
     addToCart(item);
-
-    navigation.navigate('Cart');
   }
 
   return (

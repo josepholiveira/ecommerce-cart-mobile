@@ -71,6 +71,48 @@ describe('Dashboard', () => {
     });
 
     expect(getByText('Cadeira Rivatti')).toBeTruthy();
+    expect(getByText('R$ 400,00')).toBeTruthy();
+
     expect(getByText('Poltrona de madeira')).toBeTruthy();
+    expect(getByText('R$ 600,00')).toBeTruthy();
+  });
+
+  it('should be able to add item to cart', async () => {
+    const useCartMocked = mocked(useCart);
+
+    useCartMocked.mockReturnValue({
+      addToCart(item) {
+        console.log(item);
+      },
+      products: [],
+      increment: jest.fn(),
+      decrement: jest.fn(),
+    });
+
+    apiMock.onGet('products').reply(200, [
+      {
+        id: '1234',
+        title: 'Cadeira Rivatti',
+        image_url:
+          'https://http2.mlstatic.com/cadeira-rivatti-branca-pes-madeira-confortavel-bonita-D_NQ_NP_981901-MLB20422264882_092015-F.jpg',
+        price: 400,
+      },
+      {
+        id: '123456',
+        title: 'Poltrona de madeira',
+        image_url:
+          'https://encrypted-tbn0.gstatic.com/images?q=tbn%3AANd9GcRod5Tf0R0LkCjClrgAJU0tM713nyqHTP2lFbXU1o5zheYpwgfonTTde8swBNlahgij4hGeOgn7hQ&usqp=CAc',
+        price: 600,
+      },
+    ]);
+
+    const { getByText, getByTestId, getAllByTestId } = render(<Dashboard />);
+
+    // fireEvent.press(getByTestId(`like-button-1234`));
+
+    await wait(() => fireEvent.press(getByTestId(`add-to-cart-1234`)));
+    await wait(() => fireEvent.press(getByTestId(`add-to-cart-1234`)));
+
+    // expect(getByText('R$ 800,00')).toBeTruthy();
   });
 });

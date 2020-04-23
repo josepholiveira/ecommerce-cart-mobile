@@ -11,8 +11,8 @@ export const Header = styled.View`
 `;
 
 export const LogoContainer = styled.View`
-  align-items: center;
   flex-direction: row;
+  align-items: center;
 `;
 
 export const LogoText = styled.Text`

@@ -1,4 +1,4 @@
-package com.gomarketplace;
+package com.GoMarketplace;
 
 import com.facebook.react.ReactActivity;
 
