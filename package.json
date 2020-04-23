@@ -56,19 +56,5 @@
     "prettier": "^2.0.4",
     "react-test-renderer": "16.11.0",
     "typescript": "^3.8.3"
-  },
-  "jest": {
-    "preset": "@testing-library/react-native",
-    "setupFilesAfterEnv": [
-      "@testing-library/jest-native/extend-expect"
-    ],
-    "moduleFileExtensions": [
-      "ts",
-      "tsx",
-      "js",
-      "jsx",
-      "json",
-      "node"
-    ]
   }
 }
